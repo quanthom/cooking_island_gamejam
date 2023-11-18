@@ -1,6 +1,7 @@
 # Example file showing a circle moving on screen
 import pygame
 import os
+from generate import *
 
 # pygame setup
 pygame.init()
@@ -10,6 +11,7 @@ running = True
 dt = 0
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+station_img = pygame.image.load(os.path.join("assets", "station.png"))
 
 while running:
     # poll for events
@@ -22,10 +24,8 @@ while running:
     screen.fill("purple")
 
     # Display station
-    station_img = pygame.image.load(os.path.join("assets", "station.png"))
     first_station_pos = screen.get_width() / 4, screen.get_height() / 3
-    station_rect = station_img.get_rect(center=first_station_pos)
-    screen.blit(station_img, station_rect)
+    display_stack_of(screen, station_img, first_station_pos, 3, 3)
 
     pygame.draw.circle(screen, "red", player_pos, 40)
 
