@@ -32,6 +32,11 @@ while running:
     if keys[pygame.K_d]:
         player_pos.x += 300 * dt
 
+    # Get the state of mouse buttons
+    leftclick, _, rightclick = pygame.mouse.get_pressed()
+    if leftclick:
+        player_pos.x, player_pos.y = pygame.mouse.get_pos()
+
     # flip() the display to put your work on screen
     pygame.display.flip()
 
