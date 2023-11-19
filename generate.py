@@ -1,5 +1,6 @@
 from pygame import *
 import pygame
+from globals import screen
 
 plates = []
 cooking_chain = []
@@ -10,12 +11,10 @@ class GameItem():
     _x = 0
     _y = 0
     _rect = None
-    _screen = None
     _item = None
     _stacked_item = None
 
-    def __init__(self, screen: Surface, item: Surface, x: int, y: int):
-        self._screen = screen
+    def __init__(self, item: Surface, x: int, y: int):
         width = item.get_width()
         height = item.get_height()
         self._x = x
@@ -36,12 +35,12 @@ class GameItem():
             return False
 
     def display(self):
-        self._screen.blit(self._item, self._rect)
+        screen.blit(self._item, self._rect)
         if not self.is_empty():
             self._item.blit(self._stacked_item, self._stacked_item.get_rect(center=(self._x, self._y)))
 
     def select(self):
-        pygame.draw.rect(self._screen, pygame.Color(0, 0, 255), self._rect, 4)
+        pygame.draw.rect(screen, pygame.Color(0, 0, 255), self._rect, 4)
 
     def is_empty(self):
         return self._stacked_item is None
@@ -52,18 +51,18 @@ class GameItem():
 
 
 class Plate(GameItem):
-    def __init__(self, screen: Surface, item: Surface, x: int, y: int):
-        super().__init__(screen, item, x, y)
+    def __init__(self, item: Surface, x: int, y: int):
+        super().__init__(item, x, y)
 
 
 class Ingredient(GameItem):
-    def __init__(self, screen: Surface, item: Surface, x: int, y: int):
-        super().__init__(screen, item, x, y)
+    def __init__(self, item: Surface, x: int, y: int):
+        super().__init__(item, x, y)
 
 
 class Stove(GameItem):
-    def __init__(self, screen: Surface, item: Surface, x: int, y: int):
-        super().__init__(screen, item, x, y)
+    def __init__(self, item: Surface, x: int, y: int):
+        super().__init__(item, x, y)
 
 
 def _generate_stack_positions(object: Surface, origin: tuple[int, int], rows: int, cols: int):
@@ -74,10 +73,10 @@ def _generate_stack_positions(object: Surface, origin: tuple[int, int], rows: in
     positions = [(x, y) for x in x_positions for y in y_positions]
     return positions
 
-def generate_plates(screen: Surface, object: Surface, origin: tuple[int, int], rows: int, cols: int):
+def generate_plates(object: Surface, origin: tuple[int, int], rows: int, cols: int):
     positions = _generate_stack_positions(object, origin, rows, cols)
     for pos in positions:
-        plates.append(Plate(screen, object, pos[0], pos[1]))
+        plates.append(Plate(object, pos[0], pos[1]))
 
 def display_kitchen_items():
     for plate in plates:
