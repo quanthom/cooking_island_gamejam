@@ -57,8 +57,8 @@ class GameItem():
 
 
 class Plate(GameItem):
-    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
-        super().__init__(item, x, y, draggable)
+    def __init__(self, item: Surface, x: int, y: int):
+        super().__init__(item, x, y)
 
 
 class Ingredient(GameItem):
@@ -72,8 +72,8 @@ class Ingredient(GameItem):
 
 
 class Stove(GameItem):
-    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
-        super().__init__(item, x, y, draggable)
+    def __init__(self, item: Surface, x: int, y: int):
+        super().__init__(item, x, y)
 
 
 def _generate_stack_positions(object: Surface, origin: tuple[int, int], rows: int, cols: int):
