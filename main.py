@@ -19,9 +19,6 @@ first_stove_pos = screen.get_width() / 6, 3 * screen.get_height() / 4
 generate_stoves(station_img, first_stove_pos, 7, 1)
 load_ingredients()
 
-# Add buttons and shit before the end of the game jam
-last_minute_generators()
-
 active_ingredient = None
 m = Music()
 m.play()
@@ -45,6 +42,7 @@ while running:
 
     # Display station
     display_kitchen_items()
+    last_minute_faff()
 
     pygame.draw.circle(screen, "red", player_pos, 40)
 
