@@ -13,14 +13,19 @@ dt = 0
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 station_img = pygame.image.load(os.path.join("assets", "station.png"))
-first_station_pos = screen.get_width() / 4, screen.get_height() / 3
+first_station_pos = screen.get_width() / 4, screen.get_height() / 4
 generate_plates(station_img, first_station_pos, 3, 3)
+first_stove_pos = screen.get_width() / 6, 3 * screen.get_height() / 4
+generate_stoves(station_img, first_stove_pos, 7, 1)
 load_ingredients()
 
 # Trying to display a yellow part1
 #pygame.mouse.set_visible(False)
 #cursor_img = pygame.image.load(os.path.join("assets", "hand-yellow.svg.hi.png"))
 #cursor_img_rect = cursor_img.get_rect()
+
+# Add buttons and shit before the end of the game jam
+last_minute_generators()
 
 active_ingredient = None
 m = Music()
