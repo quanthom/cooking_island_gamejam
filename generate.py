@@ -15,7 +15,7 @@ class GameItem():
     _stacked_item = None
     _draggable = False
 
-    def __init__(self, item: Surface, x: int, y: int, draggable: Bool):
+    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
         width = item.get_width()
         height = item.get_height()
         self._x = x
