@@ -1,9 +1,10 @@
 from pygame import *
 import pygame
 
-stations = []
+cooking_stations = []
 
 class GameItem():
+    _type = None
     _bounds_x = (0, 0)
     _bounds_y = (0, 0)
     _rect = None
@@ -35,6 +36,11 @@ class GameItem():
     def select(self):
         pygame.draw.rect(self._screen, pygame.Color(0, 0, 255), self._rect, 4)
 
+class StationItem(GameItem):
+    def __init__(self, screen: Surface, item: Surface, x: int, y: int):
+        self._type = "station"
+        super().__init__(screen, item, x, y)
+
 def generate_stack_positions(object: Surface, origin: tuple[int, int], rows: int, cols: int):
     w0, h0 = int(origin[0]), int(origin[1])
     w, h = int(object.get_width()), int(object.get_height())
@@ -43,11 +49,11 @@ def generate_stack_positions(object: Surface, origin: tuple[int, int], rows: int
     positions = [(x, y) for x in x_positions for y in y_positions]
     return positions
 
-def generate_stations(screen: Surface, object: Surface, origin: tuple[int, int], rows: int, cols: int):
+def generate_cooking_stations(screen: Surface, object: Surface, origin: tuple[int, int], rows: int, cols: int):
     positions = generate_stack_positions(object, origin, rows, cols)
     for pos in positions:
-        stations.append(GameItem(screen, object, pos[0], pos[1]))
+        cooking_stations.append(GameItem(screen, object, pos[0], pos[1]))
 
-def display_stations():
-    for station in stations:
+def display_kitchen_items():
+    for station in cooking_stations:
         station.display()
