@@ -1,8 +1,10 @@
 from pygame import *
 import pygame
 from globals import screen
+import os
 
 plates = []
+ingredients = []
 cooking_chain = []
 
 class GameItem():
@@ -14,8 +16,9 @@ class GameItem():
     _item = None
     _stacked_item = None
     _draggable = False
+    _stacked = False
 
-    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
+    def __init__(self, item: Surface, x: int, y: int):
         width = item.get_width()
         height = item.get_height()
         self._x = x
@@ -24,7 +27,6 @@ class GameItem():
         self._bounds_y = (y - width / 2, y + height / 2)
         self._item = item
         self._rect = item.get_rect(center=(x, y))
-        self._draggable = False
 
     def is_hovered(self):
         mx, my = pygame.mouse.get_pos()
@@ -38,8 +40,6 @@ class GameItem():
 
     def display(self):
         screen.blit(self._item, self._rect)
-        if not self.is_empty():
-            self._item.blit(self._stacked_item, self._stacked_item.get_rect(center=(self._x, self._y)))
 
     def select(self):
         pygame.draw.rect(screen, pygame.Color(0, 0, 255), self._rect, 4)
@@ -50,24 +50,30 @@ class GameItem():
     def is_empty(self):
         return self._stacked_item is None
 
-    def store_item(self, item: Surface):
+    def stack_item(self, items_list, index):
         if self.is_empty():
-            self._stacked_item = item
+            items_list[index] = Ingredient(pygame.transform.scale(items_list[index]._item, self._item.get_size()), self._x, self._y)
+            items_list[index]._stacked = True
 
 
 class Plate(GameItem):
-    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
-        super().__init__(item, x, y, draggable)
+    def __init__(self, item: Surface, x: int, y: int):
+        super().__init__(item, x, y)
 
 
 class Ingredient(GameItem):
-    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
-        super().__init__(item, x, y, draggable)
-        draggable = True 
+    def __init__(self, item: Surface, x: int, y: int):
+        self._draggable = True
+        super().__init__(item, x, y)
+
+    def display(self):
+        if self._stacked:
+            super().display()
+
 
 class Stove(GameItem):
-    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
-        super().__init__(item, x, y, draggable)
+    def __init__(self, item: Surface, x: int, y: int):
+        super().__init__(item, x, y)
 
 
 def _generate_stack_positions(object: Surface, origin: tuple[int, int], rows: int, cols: int):
@@ -83,9 +89,27 @@ def generate_plates(object: Surface, origin: tuple[int, int], rows: int, cols: i
     for pos in positions:
         plates.append(Plate(object, pos[0], pos[1]))
 
+def load_ingredients():
+    ingredients_path = os.path.join("assets", "ingredients")
+    for file in os.listdir(ingredients_path):
+        # Add only png files
+        if file.endswith('.png'):
+            ingredient = pygame.image.load(os.path.join(ingredients_path, file))
+            ingredients.append(Ingredient(ingredient, 0, 0))
+
+    index = 0
+    for plate in plates:
+        if plate.is_empty():
+            if index < len(ingredients) - 1:
+                plate.stack_item(ingredients, index)
+                index += 1
+
 def display_kitchen_items():
     for plate in plates:
         plate.display()
+
+    for ingredient in ingredients:
+        ingredient.display()
 
     for element in cooking_chain:
         element.display()
