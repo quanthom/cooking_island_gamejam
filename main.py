@@ -17,6 +17,11 @@ first_station_pos = screen.get_width() / 4, screen.get_height() / 3
 generate_plates(station_img, first_station_pos, 3, 3)
 load_ingredients()
 
+# Trying to display a yellow part1
+#pygame.mouse.set_visible(False)
+#cursor_img = pygame.image.load(os.path.join("assets", "hand-yellow.svg.hi.png"))
+#cursor_img_rect = cursor_img.get_rect()
+
 active_ingredient = None
 m = Music()
 m.play()
@@ -34,6 +39,11 @@ while running:
           if active_ingredient != None: 
             ingredients[active_ingredient]._rect.move_ip(event.rel)
 
+    # Trying to display a yellow part1=2
+    #cursor_img_rect.center = pygame.mouse.get_pos()  # update position 
+    #screen.blit(cursor_img, cursor_img_rect) # draw the cursor
+    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
     box = pygame.Rect(30,30,40,30)
@@ -41,7 +51,8 @@ while running:
     # Display station
     display_kitchen_items()
 
-    pygame.draw.circle(screen, "red", player_pos, 40)
+    #We don't needs this anymore
+    #pygame.draw.circle(screen, "red", player_pos, 40)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
