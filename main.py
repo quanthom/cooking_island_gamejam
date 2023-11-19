@@ -55,6 +55,7 @@ while running:
 
     # Display station
     display_kitchen_items()
+    last_minute_faff()
 
     #We don't needs this anymore
     #pygame.draw.circle(screen, "red", player_pos, 40)

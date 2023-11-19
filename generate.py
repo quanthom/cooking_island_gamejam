@@ -90,8 +90,7 @@ class Button(GameItem):
     def is_clicked(self):
         if self.is_hovered():
             leftclick, _, _ = pygame.mouse.get_pressed()
-            if leftclick:
-                print(f"clicked item: {self._item}")
+            return leftclick
 
 class Stove(GameItem):
     def __init__(self, item: Surface, x: int, y: int):
@@ -150,5 +149,12 @@ def display_kitchen_items():
     for button in buttons:
         button.display()
 
-def last_minute_generators():
-    pass
+stocksoup_ad_path = os.path.join("assets", "drawings", "stocksoup.png")
+stocksoup_ad = pygame.image.load(stocksoup_ad_path)
+ad_size = stocksoup_ad.get_size()
+stocksoup_ad_pos = (screen.get_width() - ad_size[0], screen.get_height() - ad_size[1])
+stocksoup_ad_obj = Stove(stocksoup_ad, stocksoup_ad_pos[0], stocksoup_ad_pos[1])
+
+def last_minute_faff():
+    if buttons[-1].is_clicked():
+        stocksoup_ad_obj.display()
