@@ -6,6 +6,7 @@ import os
 plates = []
 ingredients = []
 cooking_chain = []
+buttons = []
 
 class GameItem():
     _bounds_x = (0, 0)
@@ -113,13 +114,12 @@ def generate_plates(object: Surface, origin: tuple[int, int], rows: int, cols: i
 def generate_stoves(object: Surface, origin: tuple[int, int], rows: int, cols: int):
     positions = _generate_stack_positions(object, origin, rows + 1, cols)
     for pos in positions[:-1:]:
-        print(pos)
         cooking_chain.append(Stove(object, pos[0], pos[1]))
 
     pos = positions[-1]
     button = Button(pos[0], pos[1])
-    cooking_chain.append(button)
-    cooking_chain[-1].scale_with(object)
+    buttons.append(button)
+    buttons[-1].scale_with(object)
 
 def load_ingredients():
     ingredients_path = os.path.join("assets", "ingredients")
@@ -146,3 +146,9 @@ def display_kitchen_items():
     for element in cooking_chain:
         element.display()
         element.is_clicked()
+
+    for button in buttons:
+        button.display()
+
+def last_minute_generators():
+    pass
