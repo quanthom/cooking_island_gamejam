@@ -31,7 +31,6 @@ while running:
     display_kitchen_items()
 
     pygame.draw.circle(screen, "red", player_pos, 40)
-    pygame.draw.rect(screen, "white", box,  40) ,
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
