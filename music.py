@@ -14,7 +14,7 @@ except ModuleNotFoundError:
 class Music():
     def __init__(self, mp3_file=None):
         if mp3_file is None:
-            self._music_file = os.path.join(r"assets\music", "Island_Cooking_Songs_LOOP2.mp3")
+            self._music_file = os.path.join(r"assets", "music", "Island_Cooking_Songs_LOOP2.mp3")
         else:
             self._music_file = mp3_file
         
