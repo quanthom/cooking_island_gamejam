@@ -16,6 +16,8 @@ station_img = pygame.image.load(os.path.join("assets", "station.png"))
 first_station_pos = screen.get_width() / 4, screen.get_height() / 3
 generate_plates(station_img, first_station_pos, 3, 3)
 load_ingredients()
+
+active_ingredient = None
 m = Music()
 m.play()
 
@@ -25,6 +27,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONUP:
+          if event.button == 1:
+            active_ingredient = None
+        if event.type == pygame.MOUSEMOTION:
+          if active_ingredient != None: 
+            ingredients[active_ingredient]._rect.move_ip(event.rel)
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
@@ -49,7 +57,9 @@ while running:
     leftclick, _, rightclick = pygame.mouse.get_pressed()
     if leftclick:
         player_pos.x, player_pos.y = pygame.mouse.get_pos()
-
+        for num, ingredient in enumerate(ingredients):
+          if ingredient._rect.collidepoint(event.pos):
+            active_ingredient = num
     # flip() the display to put your work on screen
     pygame.display.flip()
 
