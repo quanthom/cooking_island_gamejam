@@ -16,7 +16,9 @@ class GameItem():
     _item = None
     _stacked_item = None
     _draggable = False
+    _clickable = False
     _stacked = False
+    _image_path = None
 
     def __init__(self, item: Surface, x: int, y: int):
         width = item.get_width()
@@ -38,6 +40,9 @@ class GameItem():
         else:
             return False
 
+    def is_clicked(self):
+        pass
+
     def display(self):
         screen.blit(self._item, self._rect)
 
@@ -55,6 +60,10 @@ class GameItem():
             items_list[index] = Ingredient(pygame.transform.scale(items_list[index]._item, self._item.get_size()), self._x, self._y)
             items_list[index]._stacked = True
 
+    def scale_with(self, item_to_scale_with):
+        self._item = pygame.transform.scale(self._item, item_to_scale_with.get_size())
+        self._rect = self._item.get_rect(center=(self._x, self._y))
+
 
 class Plate(GameItem):
     def __init__(self, item: Surface, x: int, y: int):
@@ -70,6 +79,18 @@ class Ingredient(GameItem):
         if self._stacked:
             super().display()
 
+
+class Button(GameItem):
+    def __init__(self, x: int, y: int):
+        self._item = pygame.image.load(os.path.join("assets", "buttons", "go.png"))
+        self._clickable = True
+        super().__init__(self._item, x, y)
+
+    def is_clicked(self):
+        if self.is_hovered():
+            leftclick, _, _ = pygame.mouse.get_pressed()
+            if leftclick:
+                print(f"clicked item: {self._item}")
 
 class Stove(GameItem):
     def __init__(self, item: Surface, x: int, y: int):
@@ -88,6 +109,17 @@ def generate_plates(object: Surface, origin: tuple[int, int], rows: int, cols: i
     positions = _generate_stack_positions(object, origin, rows, cols)
     for pos in positions:
         plates.append(Plate(object, pos[0], pos[1]))
+
+def generate_stoves(object: Surface, origin: tuple[int, int], rows: int, cols: int):
+    positions = _generate_stack_positions(object, origin, rows + 1, cols)
+    for pos in positions[:-1:]:
+        print(pos)
+        cooking_chain.append(Stove(object, pos[0], pos[1]))
+
+    pos = positions[-1]
+    button = Button(pos[0], pos[1])
+    cooking_chain.append(button)
+    cooking_chain[-1].scale_with(object)
 
 def load_ingredients():
     ingredients_path = os.path.join("assets", "ingredients")
@@ -113,3 +145,4 @@ def display_kitchen_items():
 
     for element in cooking_chain:
         element.display()
+        element.is_clicked()
