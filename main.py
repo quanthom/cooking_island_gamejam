@@ -13,7 +13,7 @@ dt = 0
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 station_img = pygame.image.load(os.path.join("assets", "station.png"))
 first_station_pos = screen.get_width() / 4, screen.get_height() / 3
-generate_cooking_stations(screen, station_img, first_station_pos, 3, 3)
+generate_plates(screen, station_img, first_station_pos, 3, 3)
 
 while running:
     # poll for events

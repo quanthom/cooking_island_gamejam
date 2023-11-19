@@ -1,20 +1,25 @@
 from pygame import *
 import pygame
 
-cooking_stations = []
+plates = []
+cooking_chain = []
 
 class GameItem():
-    _type = None
     _bounds_x = (0, 0)
     _bounds_y = (0, 0)
+    _x = 0
+    _y = 0
     _rect = None
     _screen = None
     _item = None
+    _stacked_item = None
 
     def __init__(self, screen: Surface, item: Surface, x: int, y: int):
         self._screen = screen
         width = item.get_width()
         height = item.get_height()
+        self._x = x
+        self._y = y
         self._bounds_x = (x - width / 2, x + width / 2)
         self._bounds_y = (y - width / 2, y + height / 2)
         self._item = item
@@ -32,16 +37,36 @@ class GameItem():
 
     def display(self):
         self._screen.blit(self._item, self._rect)
+        if not self.is_empty():
+            self._item.blit(self._stacked_item, self._stacked_item.get_rect(center=(self._x, self._y)))
 
     def select(self):
         pygame.draw.rect(self._screen, pygame.Color(0, 0, 255), self._rect, 4)
 
-class StationItem(GameItem):
+    def is_empty(self):
+        return self._stacked_item is None
+
+    def store_item(self, item: Surface):
+        if self.is_empty():
+            self._stacked_item = item
+
+
+class Plate(GameItem):
     def __init__(self, screen: Surface, item: Surface, x: int, y: int):
-        self._type = "station"
         super().__init__(screen, item, x, y)
 
-def generate_stack_positions(object: Surface, origin: tuple[int, int], rows: int, cols: int):
+
+class Ingredient(GameItem):
+    def __init__(self, screen: Surface, item: Surface, x: int, y: int):
+        super().__init__(screen, item, x, y)
+
+
+class Stove(GameItem):
+    def __init__(self, screen: Surface, item: Surface, x: int, y: int):
+        super().__init__(screen, item, x, y)
+
+
+def _generate_stack_positions(object: Surface, origin: tuple[int, int], rows: int, cols: int):
     w0, h0 = int(origin[0]), int(origin[1])
     w, h = int(object.get_width()), int(object.get_height())
     x_positions = range(w0, w0 + w * rows, w)
@@ -49,11 +74,14 @@ def generate_stack_positions(object: Surface, origin: tuple[int, int], rows: int
     positions = [(x, y) for x in x_positions for y in y_positions]
     return positions
 
-def generate_cooking_stations(screen: Surface, object: Surface, origin: tuple[int, int], rows: int, cols: int):
-    positions = generate_stack_positions(object, origin, rows, cols)
+def generate_plates(screen: Surface, object: Surface, origin: tuple[int, int], rows: int, cols: int):
+    positions = _generate_stack_positions(object, origin, rows, cols)
     for pos in positions:
-        cooking_stations.append(GameItem(screen, object, pos[0], pos[1]))
+        plates.append(Plate(screen, object, pos[0], pos[1]))
 
 def display_kitchen_items():
-    for station in cooking_stations:
-        station.display()
+    for plate in plates:
+        plate.display()
+
+    for element in cooking_chain:
+        element.display()
