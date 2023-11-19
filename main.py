@@ -24,9 +24,6 @@ load_ingredients()
 #cursor_img = pygame.image.load(os.path.join("assets", "hand-yellow.svg.hi.png"))
 #cursor_img_rect = cursor_img.get_rect()
 
-# Add buttons and shit before the end of the game jam
-last_minute_generators()
-
 active_ingredient = None
 m = Music()
 m.play()

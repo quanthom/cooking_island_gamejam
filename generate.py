@@ -152,7 +152,8 @@ def display_kitchen_items():
 stocksoup_ad_path = os.path.join("assets", "drawings", "stocksoup.png")
 stocksoup_ad = pygame.image.load(stocksoup_ad_path)
 ad_size = stocksoup_ad.get_size()
-stocksoup_ad_pos = (screen.get_width() - ad_size[0], screen.get_height() - ad_size[1])
+stocksoup_ad_pos = (screen.get_width() - ad_size[0] / 2, ad_size[1] / 2)
+print(screen.get_size(), stocksoup_ad_pos)
 stocksoup_ad_obj = Stove(stocksoup_ad, stocksoup_ad_pos[0], stocksoup_ad_pos[1])
 
 def last_minute_faff():
