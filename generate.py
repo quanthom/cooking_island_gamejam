@@ -13,8 +13,9 @@ class GameItem():
     _rect = None
     _item = None
     _stacked_item = None
+    _draggable = False
 
-    def __init__(self, item: Surface, x: int, y: int):
+    def __init__(self, item: Surface, x: int, y: int, draggable: Bool):
         width = item.get_width()
         height = item.get_height()
         self._x = x
@@ -23,6 +24,7 @@ class GameItem():
         self._bounds_y = (y - width / 2, y + height / 2)
         self._item = item
         self._rect = item.get_rect(center=(x, y))
+        self._draggable = False
 
     def is_hovered(self):
         mx, my = pygame.mouse.get_pos()
@@ -41,6 +43,9 @@ class GameItem():
 
     def select(self):
         pygame.draw.rect(screen, pygame.Color(0, 0, 255), self._rect, 4)
+    
+    def is_draggable(self): 
+        return self._draggable 
 
     def is_empty(self):
         return self._stacked_item is None
@@ -51,18 +56,18 @@ class GameItem():
 
 
 class Plate(GameItem):
-    def __init__(self, item: Surface, x: int, y: int):
-        super().__init__(item, x, y)
+    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
+        super().__init__(item, x, y, draggable)
 
 
 class Ingredient(GameItem):
-    def __init__(self, item: Surface, x: int, y: int):
-        super().__init__(item, x, y)
-
+    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
+        super().__init__(item, x, y, draggable)
+        draggable = True 
 
 class Stove(GameItem):
-    def __init__(self, item: Surface, x: int, y: int):
-        super().__init__(item, x, y)
+    def __init__(self, item: Surface, x: int, y: int, draggable: bool):
+        super().__init__(item, x, y, draggable)
 
 
 def _generate_stack_positions(object: Surface, origin: tuple[int, int], rows: int, cols: int):
