@@ -3,6 +3,7 @@ import pygame
 import os
 from generate import *
 from globals import screen
+from music import *
 
 # pygame setup
 pygame.init()
@@ -15,7 +16,10 @@ station_img = pygame.image.load(os.path.join("assets", "station.png"))
 first_station_pos = screen.get_width() / 4, screen.get_height() / 3
 generate_plates(station_img, first_station_pos, 3, 3)
 load_ingredients()
+
 active_ingredient = None
+m = Music()
+m.play()
 
 while running:
     # poll for events
@@ -38,7 +42,6 @@ while running:
     display_kitchen_items()
 
     pygame.draw.circle(screen, "red", player_pos, 40)
-    pygame.draw.rect(screen, "white", box,  40) ,
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
