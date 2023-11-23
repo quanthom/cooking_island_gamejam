@@ -4,6 +4,29 @@ import os
 from generate import *
 from globals import screen
 from music import *
+from pathlib import Path
+
+try:
+    import yaml
+    from yaml.loader import SafeLoader
+except ModuleNotFoundError:
+    exit("Error: No module named yaml. Try\n pip install pyyaml")
+
+# Open the YAML configuration file and load into a dictionary
+# Ref: pyyaml documentation, available at https://pynative.com/python-yaml
+#   accessed 23/11/2023
+action_sprites_list = []
+ingredient_sprites_list = []
+with open('game_config.yaml') as f:
+    game_config = yaml.load(f, Loader=SafeLoader)
+    #print (yaml.dump(game_config))
+    play_list = game_config['Music']['PlayList']
+
+    actions_list = game_config['Actions']
+    action_sprites_list = generate_a_sprite_list_from_yaml_config(actions_list)
+
+    ingredients_list = game_config['Ingredients']
+    ingredient_sprites_list = generate_a_sprite_list_from_yaml_config(ingredients_list)
 
 # pygame setup
 pygame.init()
@@ -13,20 +36,28 @@ dt = 0
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 station_img = pygame.image.load(os.path.join("assets", "station.png"))
+
 first_station_pos = screen.get_width() / 4, screen.get_height() / 4
 generate_plates(station_img, first_station_pos, 3, 3)
+
+second_station_pos = screen.get_width() / 2 , screen.get_height() / 4
+generate_plates(station_img, second_station_pos, 2, 2)
+
 first_stove_pos = screen.get_width() / 6, 3 * screen.get_height() / 4
 generate_stoves(station_img, first_stove_pos, 7, 1)
-load_ingredients()
 
-# Trying to display a yellow part1
+
+load_ingredients(ingredient_sprites_list)
+load_actions(action_sprites_list)
+
+# Trying to display a yellow part1 @todo
 #pygame.mouse.set_visible(False)
 #cursor_img = pygame.image.load(os.path.join("assets", "hand-yellow.svg.hi.png"))
 #cursor_img_rect = cursor_img.get_rect()
 
 active_ingredient = None
-m = Music()
-m.play()
+m = Music(play_list[0])
+m.play(loop=True)
 
 while running:
     # poll for events
@@ -41,7 +72,7 @@ while running:
           if active_ingredient != None: 
             ingredients[active_ingredient]._rect.move_ip(event.rel)
 
-    # Trying to display a yellow part1=2
+    # Trying to display a yellow part1=2 @todo
     #cursor_img_rect.center = pygame.mouse.get_pos()  # update position 
     #screen.blit(cursor_img, cursor_img_rect) # draw the cursor
     pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)

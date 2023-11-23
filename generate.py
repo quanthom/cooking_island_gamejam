@@ -2,9 +2,11 @@ from pygame import *
 import pygame
 from globals import screen
 import os
+from pathlib import Path
 
 plates = []
 ingredients = []
+actions = []
 cooking_chain = []
 buttons = []
 
@@ -80,6 +82,14 @@ class Ingredient(GameItem):
         if self._stacked:
             super().display()
 
+class Action(GameItem):
+    def __init__(self, item: Surface, x: int, y: int):
+        self._draggable = True
+        super().__init__(item, x, y)
+
+    def display(self):
+        if self._stacked:
+            super().display()
 
 class Button(GameItem):
     def __init__(self, x: int, y: int):
@@ -120,13 +130,13 @@ def generate_stoves(object: Surface, origin: tuple[int, int], rows: int, cols: i
     buttons.append(button)
     buttons[-1].scale_with(object)
 
-def load_ingredients():
-    ingredients_path = os.path.join("assets", "ingredients")
-    for file in os.listdir(ingredients_path):
-        # Add only png files
-        if file.endswith('.png'):
-            ingredient = pygame.image.load(os.path.join(ingredients_path, file))
+def load_ingredients(ingredient_sprites_list):
+    for ingredient_file in ingredient_sprites_list:
+        try:
+            ingredient = pygame.image.load(ingredient_file)
             ingredients.append(Ingredient(ingredient, 0, 0))
+        except TypeError:        
+            print("Warning  not a file object: {}".format(ingredient_file))
 
     index = 0
     for plate in plates:
@@ -135,13 +145,33 @@ def load_ingredients():
                 plate.stack_item(ingredients, index)
                 index += 1
 
+def load_actions(action_sprites_list):
+    for action_file in action_sprites_list:
+        try:
+            action = pygame.image.load(action_file)
+            actions.append(Action(action, 0, 0))
+        except TypeError:
+            print("Warning  not a file object: {}".format(action_file))
+
+    index = 0
+    for plate in plates:
+        if plate.is_empty():
+            if index < len(actions) - 1:
+                plate.stack_item(actions, index)
+                index += 1
+
+
 def display_kitchen_items():
     for plate in plates:
         plate.display()
 
     for ingredient in ingredients:
         ingredient.display()
-
+    
+    # @todo fixme
+    for action in actions:
+        action.display()
+        
     for element in cooking_chain:
         element.display()
         element.is_clicked()
@@ -159,3 +189,33 @@ stocksoup_ad_obj = Stove(stocksoup_ad, stocksoup_ad_pos[0], stocksoup_ad_pos[1])
 def last_minute_faff():
     if buttons[-1].is_clicked():
         stocksoup_ad_obj.display()
+
+
+# Some utils functions
+
+def generate_a_sprite_list_from_yaml_config(list):
+    '''
+    Quick helping function to build a list of sprites from a YAML file
+    It expects the folling format with key="image_file" for file containing the sprite:
+
+    Ingredients:
+      Aubergine:
+        image_file: assets/ingredients/Aubergine.png
+
+      Carrot:
+        image_file: assets\ingredients\Carrot.png
+    '''
+    sprites_list = []
+    for key in list:
+        if list[key] is not None:
+            try:
+                
+                try:
+                    file=Path(list[key]["image_file"])
+                    print ("Key:{} Image:{}".format(key, list[key]["image_file"]))
+                    sprites_list.append(file)
+                except TypeError:
+                   pass
+            except KeyError:
+               pass
+    return sprites_list
