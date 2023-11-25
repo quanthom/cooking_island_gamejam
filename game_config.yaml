@@ -7,15 +7,15 @@ version: 1.0
 Actions:
   Boil:
     image_file: assets/actions/Boil.png
-    sound: assets\sounds\Kettle_Boiling_1s_Fade_In_Fade_Out.mp3
+    sound: assets/sounds/Kettle_Boiling_1s_Fade_In_Fade_Out.mp3
   Chop:
     image_file: assets/actions/Chop.png
     sound:
   Toast:
     image_file: assets/actions/Toaster.png
     sound:
-      - assets\sounds\Toaster_In_1.2s_231119.mp3
-      - assets\sounds\Toaster_Out_1s_231119.mp3
+      - assets/sounds/Toaster_In_1.2s_231119.mp3
+      - assets/sounds/Toaster_Out_1s_231119.mp3
   Fry:
     sound:
   Slice:
@@ -24,14 +24,14 @@ Actions:
 
 SoundEffect:
     Success:
-      - assets\sounds\Pixabay\success-fanfare-trumpets-6185.mp3
+      - assets/sounds\Pixabay/success-fanfare-trumpets-6185.mp3
     Fail:
-      - assets\sounds\Pixabay\wah-wah-sad-trombone-6347.mp3
+      - assets/sounds\Pixabay/wah-wah-sad-trombone-6347.mp3
 
 Music:
-  PlayList: 
-    - assets\music\Island_Cooking_Songs_LOOP2.mp3
-    - assets\music\AABA_120bpm_3mn20s_ACIDIC_trim.mp3
+  PlayList:
+    - assets/music/Island_Cooking_Songs_LOOP2.mp3
+    - assets/music/AABA_120bpm_3mn20s_ACIDIC_trim.mp3
 
 Ingredients:
   Aubergine:
@@ -39,53 +39,51 @@ Ingredients:
     actions:
       - Fry
   Carrot:
-    image_file: assets\ingredients\Carrot.png
+    image_file: assets/ingredients/Carrot.png
     actions:
       - Boil
 
   Courgette:
-    image_file: assets\ingredients\Courgette.png 
+    image_file: assets/ingredients/Courgette.png
     actions:
       - Fry
 
   Garlic:
-    image_file: assets\ingredients\Garlic.png   
+    image_file: assets/ingredients/Garlic.png
     actions:
-      - Fry        
-        
+      - Fry
+
   Potato:
-    image_file: assets\ingredients\Potato.png
+    image_file: assets/ingredients/Potato.png
     actions:
       - Boil
-        
+
   Bread:
-    image_file: assets\ingredients\Bread.png      
+    image_file: assets/ingredients/Bread.png
     actions:
       - Slice
 
   Cheese:
-    image_file: assets\ingredients\Cheese.png  
+    image_file: assets/ingredients/Cheese.png
     actions:
       - Slice
-        
+
   Egg:
-    image_file: assets\ingredients\Egg.png        
+    image_file: assets/ingredients/Egg.png
     actions:
       - Boil
       - Fry
-        
+
   Lettuce:
-    image_file: assets\ingredients\Lettuce.png  
+    image_file: assets/ingredients/Lettuce.png
     actions:
       - Chop
-        
+
   Tomato:
-    # Need to get it to on unix
-    #image_file: assets/ingredients/Tomato.png
-    image_file: assets\ingredients\Tomato.png
+    image_file: assets/ingredients/Tomato.png
     actions:
       - Chop
-    
+
 
 Recipes:
   Sandwich:
@@ -105,12 +103,11 @@ Recipes:
     - Courgette
     - Chop
     - Pepper
-    - Chop    
+    - Chop
     - Tomato
-    - Chop    
+    - Chop
     - Garlic
     - Chop
     - Fry
     - Cook
-    
-      
+
