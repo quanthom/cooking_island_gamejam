@@ -1,0 +1,42 @@
+@startuml
+skinparam groupInheritance 2
+
+class Game_Item {
+    + draggable = False
+    + clickable = False
+    + stacked = False
+    + image_path = None
+}
+class SoundEffect {
+    + sound_path
+}
+class SoundEffects {
+    + sound_path
+}
+class Action {
+    + ListOfSoundEffects[]
+} 
+class Actions {
+} 
+
+class Ingredient {
+    + draggable = True
+    + clickable = True
+    + ListOfPossibleActions[]
+} 
+
+class Music {
+  + PlayList
+  + Play()
+  + Pause()
+}
+
+Game_Item <|-- Ingredient
+Game_Item <|-- Action
+
+
+SoundEffects "1" *-- "many" SoundEffect : contains
+Actions "1" *-- "many" Action : contains
+
+@enduml
+

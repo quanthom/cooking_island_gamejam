@@ -1,0 +1,44 @@
+@startuml
+skinparam roundcorner 20
+hide footbox
+Title Menu Sequence
+participant "Game Controller" as GC
+participant "Start Up Screen" as StartUpScreen #99FF99
+participant "Level X" as Level
+participant "Credits Screen" as CreditsScreen
+participant "Advert Popup" as AdvertPopup
+
+|||
+== <color:Blue> Game Startup ==
+note over GC: Play Game Trailer \n <ESC> to bypass
+
+GC-->StartUpScreen: Display (Start Up)
+note right
+--Menu--
+    * New Game
+    * Options
+    * Help
+    * Exit
+end note
+
+== <color:Blue> Start a Level ==
+StartUpScreen --> StartUpScreen: New Game <PRESSED>
+StartUpScreen --> Level: Display \n (Selected Level)
+Level --> GC: Store the player Score
+note left
+    Update 
+    High Scores
+end note
+Level --> StartUpScreen: Exit Level \n (Level Instance)
+== <color:Blue> Credit  ==
+StartUpScreen-->CreditsScreen: Display \n (Credits)
+CreditsScreen-->StartUpScreen: Display (Start Up)
+note right
+    Exit Credit when 
+    the credit list is completed
+    <ESC> to bypass
+end note
+
+StartUpScreen --> StartUpScreen: Exit <PRESSED>
+StartUpScreen-->GC: Exit
+@endum

@@ -1,0 +1,29 @@
+@startuml
+skinparam groupInheritance 2
+
+class Game_Controller {
+    + TotalScore
+    + Timer
+    + SoundMixer
+}
+class Level {    
+}
+class StartUpScreen {
+    + GameTitle
+    + Level1Button
+    + Level2Button
+    + Help
+    + Quit
+}
+class CreditsScreen {
+}
+class AdvertPopup {
+}
+
+Game_Controller "1" *-- "many" Level : contains
+Game_Controller "1" *-- "1" StartUpScreen : contains
+Game_Controller "1" *-- "1" AdvertPopup : contains
+Game_Controller "1" *-- "1" CreditsScreen : contains
+
+@enduml
+

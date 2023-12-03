@@ -1,0 +1,62 @@
+@startuml
+skinparam roundcorner 20
+hide footbox
+Title Level Sequence Diagram
+participant "Game Controller" as GC
+participant "Level X" as Level #9999FF
+participant "Recipe Screen" as Recipe #99FF99
+participant "Practice Screen" as Practice #99FF99
+participant "Restaurant Screen" as Restaurant #99FF99
+|||
+GC --> Level: Display \n (Level)
+hnote over  Level: Idle 
+note right
+    -- Level Screen --
+    * Learn Recipes
+    * Restaurant
+    * Main Menu
+end note
+== <color:Blue> Learning the recipes ==
+Level-->Level: Learn Recipes <PRESSED>
+
+Level-->Recipe: Display \n (Recipe Screen)
+note over Recipe: Load Level \n Recipes
+note right
+    -- Recipe Screen --
+    The recipe screen contains the
+    "Menu du Jour" with all the recipes
+    to memorise.
+    The player presses the "OK" 
+    button when they have memorised
+    all the recipes.
+end note
+hnote over  Level: Learning 
+== <color:Blue> Recipe practice  ==
+Recipe-->Recipe: Practice Recipe X <PRESSED>
+note left
+    The player have selected 
+    "Recipe X" to memorise.
+end note
+Recipe --> Practice: Display \n (Recipe x)
+note over Practice: Load Recipe X \n Practice Recipe X
+Practice  --> Practice: Exit <PRESSED>
+Practice  --> Recipe: Display \n (Recipe Screen)
+Recipe  --> Recipe: Exit <PRESSED>
+Recipe-->Level: Display \n (Level)
+== <color:Blue> The restaurant  ==
+
+hnote over Level: Idle 
+Level-->Level: Restaurant <PRESSED>
+Level --> Restaurant: Display \n ( Restaurant)
+note right
+    Display Tickets area 
+    Display Egg Timer
+end note
+hnote over Level: Playing 
+Restaurant --> Restaurant: Run Out of Time
+note left
+    Display the Score     
+end note
+Restaurant-->Restaurant: OK <PRESSED>
+Restaurant-->Level: Display \n (Level)
+@endum
